@@ -1,0 +1,19 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: http-long-poll-backend
+spec:
+  replicas: 1
+  selector:
+    matchLabels:
+      app: http-long-poll-backend
+  template:
+    metadata:
+      labels:
+        app: http-long-poll-backend
+    spec:
+      containers:
+        - name: backend
+          image: blackdark93/http-long-poll-test-backend:test3
+          ports:
+            - containerPort: 3000

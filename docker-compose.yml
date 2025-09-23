@@ -1,0 +1,23 @@
+version: "3.8"
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    image: blackdark93/http-long-poll-test-backend:test3
+    ports:
+      - "3000:3000"
+    environment:
+      - FRAMEWORK=${FRAMEWORK:-bun}
+
+  client:
+    build:
+      context: .
+      dockerfile: Dockerfile.client
+    image: blackdark93/http-long-poll-test-client:test
+    depends_on:
+      - backend
+    environment:
+      - BACKEND_URL=http://backend:3000
+      - TIMEOUT=5000

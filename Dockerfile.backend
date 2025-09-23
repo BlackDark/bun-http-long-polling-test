@@ -1,0 +1,14 @@
+FROM oven/bun:latest
+
+WORKDIR /app
+
+COPY package.json bun.lock tsconfig.json ./
+RUN bun install
+
+COPY server.ts server-hono.ts ./
+
+EXPOSE 3000
+
+USER bun
+
+CMD ["bun", "run", "server.ts"]

@@ -1,0 +1,12 @@
+FROM curlimages/curl:latest
+
+RUN adduser --disabled-password --uid 1000 appuser
+
+WORKDIR /app
+
+COPY test-client.sh ./
+RUN chmod +x test-client.sh
+
+USER appuser
+
+CMD ["./test-client.sh"]
