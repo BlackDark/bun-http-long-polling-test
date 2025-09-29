@@ -1,7 +1,7 @@
 import { Hono } from "hono";
 import { streamSSE } from "hono/streaming";
 import { logger } from "./logger";
-import { trace, metrics } from "@opentelemetry/api";
+import { trace } from "@opentelemetry/api";
 import { otel } from "@hono/otel";
 import { prometheus } from "@hono/prometheus";
 

@@ -11,4 +11,4 @@ EXPOSE 3000
 
 USER bun
 
-CMD ["bun", "run", "src/server.ts"]
+CMD ["bun", "run", "dev"]

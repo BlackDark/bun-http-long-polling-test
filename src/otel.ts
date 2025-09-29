@@ -1,7 +1,6 @@
 import { NodeSDK } from "@opentelemetry/sdk-node";
 import { getNodeAutoInstrumentations } from "@opentelemetry/auto-instrumentations-node";
 import { OTLPTraceExporter } from "@opentelemetry/exporter-trace-otlp-http";
-import { ConsoleSpanExporter } from "@opentelemetry/sdk-trace-base";
 import { OTLPMetricExporter } from "@opentelemetry/exporter-metrics-otlp-http";
 import { PrometheusExporter } from "@opentelemetry/exporter-prometheus";
 import { resourceFromAttributes } from "@opentelemetry/resources";
@@ -9,21 +8,32 @@ import {
   ATTR_SERVICE_NAME,
   ATTR_SERVICE_VERSION,
 } from "@opentelemetry/semantic-conventions";
-import {
-  PeriodicExportingMetricReader,
-  ConsoleMetricExporter,
-} from "@opentelemetry/sdk-metrics";
+import { PeriodicExportingMetricReader } from "@opentelemetry/sdk-metrics";
 import {
   LoggerProvider,
   BatchLogRecordProcessor,
 } from "@opentelemetry/sdk-logs";
 import { OTLPLogExporter } from "@opentelemetry/exporter-logs-otlp-http";
-import { WinstonInstrumentation } from "@opentelemetry/instrumentation-winston";
 import logsAPI from "@opentelemetry/api-logs";
+
+import { diag, DiagConsoleLogger, DiagLogLevel } from "@opentelemetry/api";
+import {
+  ATTR_K8S_POD_NAME,
+  ATTR_K8S_POD_UID,
+} from "@opentelemetry/semantic-conventions/incubating";
+
+const enabledOtelDiagnose = process.env.ENABLED_OTEL_DIAGNOSE === "true";
+
+if (enabledOtelDiagnose) {
+  // For troubleshooting, set the log level to DiagLogLevel.DEBUG
+  diag.setLogger(new DiagConsoleLogger(), DiagLogLevel.INFO);
+}
 
 const resource = resourceFromAttributes({
   [ATTR_SERVICE_NAME]: process.env.OTEL_SERVICE_NAME || "bun-application",
   [ATTR_SERVICE_VERSION]: process.env.OTEL_SERVICE_VERSION || "1.0.0",
+  [ATTR_K8S_POD_NAME]: process.env.K8S_POD_NAME,
+  [ATTR_K8S_POD_UID]: process.env.K8S_POD_UID,
 });
 
 // Configure logs pipeline

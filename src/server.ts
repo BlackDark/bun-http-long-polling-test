@@ -1,4 +1,3 @@
-import "./otel"; // Initialize OpenTelemetry
 import { logger } from "./logger";
 import { trace } from "@opentelemetry/api";
 
