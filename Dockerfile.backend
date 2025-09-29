@@ -5,10 +5,10 @@ WORKDIR /app
 COPY package.json bun.lock tsconfig.json ./
 RUN bun install
 
-COPY server.ts server-hono.ts ./
+COPY src/ src/
 
 EXPOSE 3000
 
 USER bun
 
-CMD ["bun", "run", "server.ts"]
+CMD ["bun", "run", "src/server.ts"]
